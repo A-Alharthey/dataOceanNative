@@ -5,6 +5,7 @@ import SignIn from './screens/SignIn';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast, { ErrorToast } from 'react-native-toast-message';
 import "./global.css";
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 export default function App() {
   const stack = createNativeStackNavigator();
   const toastConfig = {
@@ -12,21 +13,23 @@ export default function App() {
   }
   return (
     <>
-      <NavigationContainer>
-        <stack.Navigator>
-          <stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{
-              title: "Sign In",
-              headerStyle: { backgroundColor: "#282C34" },
-              headerTintColor: "#fff",
-              headerTitleStyle: { fontWeight: "bold" },
-              headerTitleAlign: "center"
-            }}
-          />
-        </stack.Navigator>
-      </NavigationContainer>
+      <KeyboardProvider>
+        <NavigationContainer>
+          <stack.Navigator>
+            <stack.Screen
+              name="SignIn"
+              component={SignIn}
+              options={{
+                title: "Sign In",
+                headerStyle: { backgroundColor: "#282C34" },
+                headerTintColor: "#fff",
+                headerTitleStyle: { fontWeight: "bold" },
+                headerTitleAlign: "center"
+              }}
+            />
+          </stack.Navigator>
+        </NavigationContainer>
+      </KeyboardProvider>
       <Toast config={toastConfig} />
     </>
   );
