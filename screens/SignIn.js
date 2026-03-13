@@ -61,8 +61,8 @@ export default function SignIn() {
                     {errors.username && <Text className="text-red-500 self-start">{errors.username}</Text>}
                     <TextInput secureTextEntry onChange={(e) => { setFormData({ ...formData, password: e.nativeEvent.text }); validateForm("password", e.nativeEvent.text) }} className={`bg-[#282C34] text-white border ${errors.password ? 'border-red-500' : 'border-gray-400'} rounded-md p-2 m-2 w-full`} placeholder='Password' placeholderTextColor="grey"></TextInput>
                     {errors.password && <Text className="text-red-500 self-start">{errors.password}</Text>}
-                    <Pressable android_ripple={{foreground:true,color:"#fff"}} className="w-full bg-[#8a85ff] text-white border rounded-md p-2 m-2 hover:bg-[#5bb8e0]" title='Sign In' color="#61dafb" onPress={() => {
-                        if (Object.values(errors).every((error) => error === "")) {
+                    <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.15)" }} className="w-full bg-[#8a85ff] text-white border rounded-md p-2 m-2 hover:bg-[#5bb8e0]" title='Sign In' color="#61dafb" onPress={() => {
+                        if (Object.values(errors).every((error) => error === "" || error === undefined) && Object.keys(formData).length === 2) {
                             sendData()
                         }
                     }}>
