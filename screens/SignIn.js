@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, StatusBar, Pressable, Image, Platform, ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Toast from 'react-native-toast-message';
 import "../global.css";
 import { useHeaderHeight } from '@react-navigation/elements';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { storage } from '../tools/mmkvStorage';
+import { Button } from 'react-native-paper';
+import { AppContext } from '../context/AppContext';
 export default function SignIn() {
     const [formData, setFormData] = useState({})
     const [errors, setErrors] = useState({})
+    const {login,setLoading} = useContext(AppContext)
     const validateForm = (input, value) => {
         const newErrors = {
             username: errors.username,
@@ -18,6 +22,7 @@ export default function SignIn() {
         setErrors((prevErrors) => ({ ...prevErrors, ...newErrors }));
     };
     const sendData = async () => {
+        setLoading(true)
         const config = {
             method: "POST",
             body: JSON.stringify({ ...formData }),
@@ -33,7 +38,7 @@ export default function SignIn() {
                 text2: 'Please check your credentials and try again.'
             });
             console.error("Error:", error)
-        }).finally(() => console.log("Request completed"));
+        }).finally(() => setLoading(false));
         if (!response.ok) {
             Toast.show({
                 type: 'error',
@@ -49,6 +54,7 @@ export default function SignIn() {
             text1: 'Login Successful',
             text2: 'You have successfully logged in.'
         })
+        login(data)
     }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
