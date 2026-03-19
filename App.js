@@ -14,6 +14,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { AppContext } from './context/AppContext';
 import WorkOrder from './screens/drawer/WorkOrder';
 import TechnicianServices from './screens/drawer/TechnicianServices';
+import WorkOrderEdit from './screens/WorkOrderEdit';
+import WorkOrderFilter from './screens/WorkOrderFilter';
+import TechnicianFilter from './screens/TechnicianFilter';
 const HEADEROPTIONS = {
   headerStyle: { backgroundColor: "#282C34" },
   headerTintColor: "#fff",
@@ -34,10 +37,27 @@ export default function App() {
           <stack.Navigator >
             {
               token ?
-                <stack.Screen
-                  name="DashboardDrawer"
-                  component={DashboardDrawer}
-                  options={{ headerShown: false }} />
+                <>
+                  <stack.Screen
+                    name="DashboardDrawer"
+                    component={DashboardDrawer}
+                    options={{ headerShown: false }} />
+                  <stack.Screen
+                    name='WorkOrderEdit'
+                    component={WorkOrderEdit}
+                    options={{ ...HEADEROPTIONS, title: "Edit or Add Work Order Record" }}
+                  />
+                  <stack.Screen
+                    name='WorkOrderFilter'
+                    component={WorkOrderFilter}
+                    options={{ ...HEADEROPTIONS, title: "Filter Work Orders", animation: "slide_from_bottom", presentation: "modal" }}
+                  />
+                  <stack.Screen
+                    name='TechnicianFilter'
+                    component={TechnicianFilter}
+                    options={{ ...HEADEROPTIONS, title: "Filter Technician", animation: "slide_from_bottom", presentation: "modal" }}
+                  />
+                </>
                 :
                 <stack.Screen
                   name="SignIn"
