@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from './screens/SignIn';
 import { NavigationContainer } from '@react-navigation/native';
-import Toast, { ErrorToast } from 'react-native-toast-message';
+import Toast, { ErrorToast, InfoToast, SuccessToast } from 'react-native-toast-message';
 import "./global.css";
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
@@ -17,6 +17,7 @@ import TechnicianServices from './screens/drawer/TechnicianServices';
 import WorkOrderEdit from './screens/WorkOrderEdit';
 import WorkOrderFilter from './screens/WorkOrderFilter';
 import TechnicianFilter from './screens/TechnicianFilter';
+import TechnicianEdit from './screens/TechnicianEdit';
 const HEADEROPTIONS = {
   headerStyle: { backgroundColor: "#282C34" },
   headerTintColor: "#fff",
@@ -27,7 +28,8 @@ export default function App() {
   const stack = createNativeStackNavigator();
   const toastConfig = {
     error: (props) => (<ErrorToast {...props} style={{ backgroundColor: '#e74c3c', borderLeftColor: "#e74c3c" }} text1Style={{ color: '#fff' }} text2Style={{ color: '#fff' }} />),
-    success: (props) => (<ErrorToast {...props} style={{ backgroundColor: '#2ecc71', borderLeftColor: "#2ecc71" }} text1Style={{ color: '#fff' }} text2Style={{ color: '#fff' }} />)
+    success: (props) => (<SuccessToast {...props} style={{ backgroundColor: '#2ecc71', borderLeftColor: "#2ecc71" }} text1Style={{ color: '#fff' }} text2Style={{ color: '#fff' }} />),
+    info: (props) => (<InfoToast {...props} style={{ backgroundColor: '#2B7FFF', borderLeftColor: "#2B7FFF" }} text1Style={{ color: '#fff', fontSize: 15 }} text2Style={{ color: '#fff' }} />)
   }
   return (
     <>
@@ -46,6 +48,11 @@ export default function App() {
                     name='WorkOrderEdit'
                     component={WorkOrderEdit}
                     options={{ ...HEADEROPTIONS, title: "Edit or Add Work Order Record" }}
+                  />
+                  <stack.Screen
+                    name='TechnicianEdit'
+                    component={TechnicianEdit}
+                    options={{ ...HEADEROPTIONS, title: "Edit Technician Services" }}
                   />
                   <stack.Screen
                     name='WorkOrderFilter'

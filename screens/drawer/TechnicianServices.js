@@ -98,9 +98,6 @@ const TechnicianServices = (props) => {
                 <Pressable onPress={() => navigation.navigate("TechnicianFilter")} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.15)" }} className="bg-[#8a85ff] border rounded-md p-2 m-2" title='New' color="#61dafb">
                     <Text className="text-[#fff] text-center font-bold text-xl">Filter {`(${Object.keys(filters.technician).length})`}</Text>
                 </Pressable>
-                <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.15)" }} className="bg-[#8a85ff] border rounded-md p-2 m-2" title='New' color="#61dafb">
-                    <Text className="text-[#fff] text-center font-bold text-xl">New +</Text>
-                </Pressable>
                 <ScrollView horizontal>
                     <View>
                         <FlatList

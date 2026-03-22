@@ -4,13 +4,12 @@ import Toast from 'react-native-toast-message';
 import "../global.css";
 import { useHeaderHeight } from '@react-navigation/elements';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { storage } from '../tools/mmkvStorage';
 import { Button } from 'react-native-paper';
 import { AppContext } from '../context/AppContext';
 export default function SignIn() {
     const [formData, setFormData] = useState({})
     const [errors, setErrors] = useState({})
-    const {login,setLoading} = useContext(AppContext)
+    const { login, setLoading } = useContext(AppContext)
     const validateForm = (input, value) => {
         const newErrors = {
             username: errors.username,
@@ -54,7 +53,7 @@ export default function SignIn() {
             text1: 'Login Successful',
             text2: 'You have successfully logged in.'
         })
-        login(data)
+        login(data.token)
     }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

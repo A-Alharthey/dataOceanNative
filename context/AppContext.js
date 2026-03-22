@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { storage } from "../tools/mmkvStorage";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AppContext = createContext()
 export const AppProvider = ({ children }) => {
     const [token, setToken] = useState(null);
@@ -8,14 +7,16 @@ export const AppProvider = ({ children }) => {
     //filter is necessary to be within a context so the button within workorder has the how many filters are applied also for filtering the actual table
     const [filters, setFilters] = useState({ workOrder: {}, technician: {} })
     useEffect(() => {
-        storage.getString("userData") && setToken(JSON.parse(storage.getString("userData")).token)
+        AsyncStorage.getItem("token").then((tokenVal) => {
+            tokenVal && setToken(tokenVal)
+        })
     }, [])
-    const login = (userData) => {
-        storage.set("userData", JSON.stringify(userData))
-        setToken(userData.token)
+    const login = async (tokenVal) => {
+        await AsyncStorage.setItem("token", tokenVal)
+        setToken(tokenVal)
     }
-    const logout = () => {
-        storage.remove("userData")
+    const logout = async () => {
+        await AsyncStorage.removeItem("token")
         setToken(null)
     }
     return (
