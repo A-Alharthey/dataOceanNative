@@ -194,127 +194,125 @@ const TableRow = memo(({ item, i, navigation }) => {
         </Menu>
     )
     return (
-        <View style={{ backgroundColor: "#282C34", marginVertical: 10, marginHorizontal: 20, justifyContent: "center", borderRadius: 8 }} key={i}>
-            <Card>
-                <View style={{ borderTopEndRadius: 8, borderTopStartRadius: 8, paddingLeft: 15, paddingBottom: 15, padding: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: statusColors[item.statusCssClass] }}>
-                    <View style={{ flexGrow: 2, gap: 5 }}>
-                        <Text style={{ color: "white", fontSize: 13 }}>WO-{item.number} • {item.code}</Text>
-                        <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
-                            <Text style={{ flex: 1, color: "white", fontSize: 23, fontWeight: "bold" }}>{item.title}</Text>
-                        </View>
-                    </View>
-                    <View style={{ gap: 10, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", flexGrow: 1 }}>
-                        <Chip style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>{item.status}</Chip>
-                        <MenuElement />
+        <Card style={{ overflow: "hidden", backgroundColor: "#282C34", marginVertical: 10, marginHorizontal: 20, justifyContent: "center", borderRadius: 8 }} key={i}>
+            <View style={{ paddingLeft: 15, paddingBottom: 15, padding: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-around", backgroundColor: statusColors[item.statusCssClass] }}>
+                <View style={{ flexGrow: 2, gap: 5 }}>
+                    <Text style={{ color: "white", fontSize: 13 }}>WO-{item.number} • {item.code}</Text>
+                    <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+                        <Text style={{ flex: 1, color: "white", fontSize: 23, fontWeight: "bold" }}>{item.title}</Text>
                     </View>
                 </View>
-                <View style={{ flexDirection: "column", alignItems: "flex-start", marginVertical: 15, paddingHorizontal: 10, gap: 15 }}>
-                    <Chip style={{ backgroundColor: statusColors[item.priorityCssClass], marginLeft: 10 }}>{item.priorityId}</Chip>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="map-marker" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>LOCATION</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold" }}>{(item.LocationId || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: "row", marginRight: 25 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="calendar" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>WO DATE</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.workOrderDate || "N/A")}</Text>
-                                </View>
+                <View style={{ gap: 10, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", flexGrow: 1 }}>
+                    <Chip style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>{item.status}</Chip>
+                    <MenuElement />
+                </View>
+            </View>
+            <View style={{ flexDirection: "column", alignItems: "flex-start", marginVertical: 15, paddingHorizontal: 10, gap: 15 }}>
+                <Chip style={{ backgroundColor: statusColors[item.priorityCssClass], marginLeft: 10 }}>{item.priorityId}</Chip>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                    <View style={{ flexDirection: "row", marginLeft: 5 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="map-marker" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>LOCATION</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold" }}>{(item.LocationId || "N/A")}</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="calendar" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>DUE DATE</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.dueDate || "N/A")}</Text>
-                                </View>
+                    <View style={{ flexDirection: "row", marginRight: 25 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="calendar" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>WO DATE</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.workOrderDate || "N/A")}</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: "row", marginRight: 25 }}>
-                            {/* assuming that the completed date is mutually exclusive with the cancelled date, we would show the appropriate view */}
-                            {
-                                item.cancelDate ? <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                    <Icon size={25} source="calendar-remove-outline" color="rgba(255,255,255,0.5)" />
+                    </View>
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                    <View style={{ flexDirection: "row", marginLeft: 5 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="calendar" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>DUE DATE</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.dueDate || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: "row", marginRight: 25 }}>
+                        {/* assuming that the completed date is mutually exclusive with the cancelled date, we would show the appropriate view */}
+                        {
+                            item.cancelDate ? <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                <Icon size={25} source="calendar-remove-outline" color="rgba(255,255,255,0.5)" />
+                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>CANCEL DATE</Text>
+                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", fontStyle: (item.cancelDate ? "normal" : "italic"), color: (item.cancelDate ? "white" : "rgba(255,255,255,0.5)") }}>{(item.cancelDate || "Active")}</Text>
+                                </View>
+                            </View> :
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                                    <Icon size={25} source={(item.completedDate ? "calendar-check-outline" : "calendar-clock-outline")} color="rgba(255,255,255,0.5)" />
                                     <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                        <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>CANCEL DATE</Text>
-                                        <Text style={{ width: 120, color: "white", fontWeight: "bold", fontStyle: (item.cancelDate ? "normal" : "italic"), color: (item.cancelDate ? "white" : "rgba(255,255,255,0.5)") }}>{(item.cancelDate || "Active")}</Text>
+                                        <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>COMPLETED DATE</Text>
+                                        <Text style={{ width: 120, color: "white", fontWeight: "bold", fontStyle: (item.completedDate ? "normal" : "italic"), color: (item.completedDate ? "white" : "rgba(255,255,255,0.5)") }}>{(item.completedDate || "Pending")}</Text>
                                     </View>
-                                </View> :
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                        <Icon size={25} source={(item.completedDate ? "calendar-check-outline" : "calendar-clock-outline")} color="rgba(255,255,255,0.5)" />
-                                        <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                            <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>COMPLETED DATE</Text>
-                                            <Text style={{ width: 120, color: "white", fontWeight: "bold", fontStyle: (item.completedDate ? "normal" : "italic"), color: (item.completedDate ? "white" : "rgba(255,255,255,0.5)") }}>{(item.completedDate || "Pending")}</Text>
-                                        </View>
-                                    </View>
-                            }
-                        </View>
+                                </View>
+                        }
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="package-variant-closed" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>ASSET ITEMS</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.assetItemId || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: "row", marginRight: 25 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="map-marker" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>ASSET LOCATION</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.assetLocationId || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="wrench" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>MAINTENANCE REQUEST</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.maintenanceRequestId || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: "row", marginRight: 25 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="clipboard-text" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>MAINTENANCE PLAN</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.maintenancePlanId || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    {
-                        item.cancelBy &&
-                        <View style={{ flexDirection: "row", alignSelf: "center", marginRight: 35 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                <Icon size={25} source="close-circle" color="rgba(255,255,255,0.5)" />
-                                <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
-                                    <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>CANCELLED BY</Text>
-                                    <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.cancelBy || "N/A")}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    }
                 </View>
-            </Card>
-        </View>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                    <View style={{ flexDirection: "row", marginLeft: 5 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="package-variant-closed" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>ASSET ITEMS</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.assetItemId || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: "row", marginRight: 25 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="map-marker" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>ASSET LOCATION</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.assetLocationId || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                    <View style={{ flexDirection: "row", marginLeft: 5 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="wrench" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>MAINTENANCE REQUEST</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.maintenanceRequestId || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: "row", marginRight: 25 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="clipboard-text" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>MAINTENANCE PLAN</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.maintenancePlanId || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                {
+                    item.cancelBy &&
+                    <View style={{ flexDirection: "row", alignSelf: "center", marginRight: 35 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Icon size={25} source="close-circle" color="rgba(255,255,255,0.5)" />
+                            <View style={{ flexDirection: "column", alignItems: "flex-start", marginLeft: 5, gap: 2 }}>
+                                <Text style={{ width: 120, color: "rgba(255,255,255,0.5)" }}>CANCELLED BY</Text>
+                                <Text style={{ width: 120, color: "white", fontWeight: "bold", }}>{(item.cancelBy || "N/A")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                }
+            </View>
+        </Card>
     )
 })
 // const FilterModal = ({ setVisible, visible, componentLoading, suggestions, getSuggestions, setComponentLoading }) => {
