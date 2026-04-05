@@ -122,7 +122,7 @@ const WorkOrder = (props) => {
                 </Pressable> */}
                 {/* <ScrollView horizontal> */}
                 <View style={{ gap: 10, backgroundColor: "transparent", flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingVertical: 15, justifyContent: "center" }}>
-                    <AutoCompleteSelector onSelected={(item) => setOrder((prev) => ({ ...prev, field: item.id }))} ModalTitle='Sort By' Data={SELECTED_FIELDS} Label='Order By' ButtonStyle={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.5)", borderRadius: 5, gap: 10, flexGrow: 1 }} />
+                    <AutoCompleteSelector onSelected={(item) => setOrder((prev) => ({ ...prev, field: item.id }))} ModalTitle='Sort By' Data={SELECTED_FIELDS} Label='Order By' ButtonStyle={{ gap: 10, flexGrow: 1, padding: 10, marginTop: 0 }} />
                     <Pressable style={{ justifyContent: 'center', alignItems: 'center', height: 47, width: 47, padding: 5, borderRadius: 5, backgroundColor: "#8a85ff" }} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.15)" }} onPress={() => (toggleRotate(), setOrder((prev) => ({ ...prev, direction: prev.direction === "asc" ? "desc" : "asc" })))}>
                         <Animated.View style={{ transform: [{ rotate: rotation }] }}>
                             <Icon source="arrow-up" size={30} color="#fff" />

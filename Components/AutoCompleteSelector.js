@@ -33,26 +33,33 @@ data example
  * @property {string} Label
  * @property {number} [ValueId]
  * @property {(selectedItem: {id: number, name: string}) => void} [onSelected]
+ * @property {import('react-native').StyleProp<import('react-native').ViewStyle>} [LabelStyle]
  * @param {AutoCompleteSelectorProps} props
  */
-const AutoCompleteSelector = ({ Label, ValueId, Data, isLoading = false, isDisabled = false, ButtonStyle, ModalTitle = 'Title Goes Here', onSelected }) => {
+const AutoCompleteSelector = ({ Label, ValueId, Data, isLoading = false, isDisabled = false, ButtonStyle, ModalTitle = 'Title Goes Here', onSelected, LabelStyle }) => {
     const safeData = useMemo(() => Data ?? [], [Data]);
-    const defaultSelected = { id: null, name: "-- None --" }
+    const defaultSelected = useMemo(() => ({ id: null, name: "-- None --" }), []);
     const [selectedItem, setSelectedItem] = useState(ValueId ? safeData?.find(item => item.id === ValueId) : defaultSelected);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [filteredData, setFilteredData] = useState(() => [defaultSelected, ...safeData]);
     useEffect(() => {
         setFilteredData([defaultSelected, ...(safeData ?? [])]);
     }, [safeData]);
+    useEffect(() => {
+        const found =
+            ValueId != null
+                ? safeData.find(item => item.id === ValueId)
+                : defaultSelected;
+        setSelectedItem(found ?? defaultSelected);
+    }, [ValueId, safeData]);
     const handleSearch = (textValue) => {
         const filtered = safeData?.filter(item => item.id != null && item.name.toLowerCase().includes(textValue.toLowerCase()));
-        console.log("filtered", filtered);
         setFilteredData([defaultSelected, ...filtered]);
     };
     return (
         <>
-            <Pressable onPress={() => setIsModalVisible(true)} style={{ ...ButtonStyle, borderColor: isDisabled ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)", flexDirection: "row", alignItems: "center", padding: 10 }} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.1)" }} disabled={isDisabled || isLoading}>
-                <Text style={{ padding: 3, position: "absolute", top: -13, left: 13, color: isDisabled ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)", backgroundColor: "#1c2025" }}>{Label}</Text>
+            <Pressable onPress={() => setIsModalVisible(true)} style={{ ...ButtonStyle, borderColor: isDisabled ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)", flexDirection: "row", alignItems: "center", padding: ButtonStyle?.padding ?? 17, borderWidth: 1, borderRadius: 5, justifyContent: "space-between", marginTop: ButtonStyle?.marginTop ?? 20, alignItems: "center" }} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.1)" }} disabled={isDisabled || isLoading}>
+                <Text style={{ ...LabelStyle, padding: LabelStyle?.padding ?? 3, position: "absolute", top: -13, left: 13, color: isDisabled ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)", backgroundColor: LabelStyle?.backgroundColor ?? "#1c2025" }}>{Label}</Text>
                 <Text style={{ color: isDisabled ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,1)", fontSize: 15 }}>{selectedItem?.name}</Text>
                 <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 10 }}>
                     <ActivityIndicator animating={isLoading} size="small" />
@@ -64,8 +71,8 @@ const AutoCompleteSelector = ({ Label, ValueId, Data, isLoading = false, isDisab
                     <View style={{ backgroundColor: '#282C34', justifyContent: "center", alignItems: "center", borderRadius: 5, marginHorizontal: 40, padding: 20 }}>
                         <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
                             <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>{ModalTitle}</Text>
-                            <Pressable style={{ padding: 5, borderRadius: 5 }} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.1)" }} onPress={() => setIsModalVisible(false)}>
-                                <Icon source="close" size={25} color="rgba(255,255,255,0.5)" onPress={() => setIsModalVisible(false)} />
+                            <Pressable style={{ borderRadius: 5, padding: 5 }} android_ripple={{ foreground: true, color: "rgba(255,255,255,0.1)" }} onPress={() => setIsModalVisible(false)}>
+                                <Icon source="close" size={25} color="rgba(255,255,255,0.6)" onPress={() => setIsModalVisible(false)} />
                             </Pressable>
                         </View>
                         <TextInput onChangeText={(textValue) => handleSearch(textValue)} left={<TextInput.Icon color="rgba(255,255,255,0.5)" icon="magnify" />} placeholderTextColor={"rgba(255,255,255,0.5)"} mode='outlined' placeholder='search' style={{ height: 40, backgroundColor: "transparent", width: "100%" }} />
@@ -81,7 +88,7 @@ const AutoCompleteSelector = ({ Label, ValueId, Data, isLoading = false, isDisab
                                     setIsModalVisible(false);
                                     handleSearch("");
                                 }}>
-                                    <Text style={{ color: "white", fontSize: 15, justifyContent: "center", alignItems: "flex-start" }}>{item.name}</Text>
+                                    <Text style={{ color: "white", fontSize: 20, justifyContent: "center", alignItems: "flex-start" }}>{item.name}</Text>
                                 </Pressable>
                             )}
                         />
