@@ -1,5 +1,5 @@
 import React, { memo, useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, FlatList, Platform, StatusBar, Animated } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, FlatList, Platform, StatusBar, Animated, Alert } from 'react-native';
 import { ActivityIndicator, AnimatedFAB, Avatar, Badge, Button, Card, Chip, DataTable, Divider, FAB, Icon, MD3DarkTheme, Menu, PaperProvider, TextInput } from 'react-native-paper';
 import { AppContext } from '../../context/AppContext';
 import Modal from 'react-native-modal';
@@ -75,7 +75,7 @@ const WorkOrder = (props) => {
     }, [isFocused]);
     const getTableData = async () => {
         if (!loadingFooterVisible) setLoading(true)
-        const sortingQuery = order.field === null ? "" : `&orderBy=${order.field}&orderDirection=${order.direction}`
+        const sortingQuery = order.field ? `&orderBy=${order.field}&orderDirection=${order.direction}` : ""
         console.log(sortingQuery)
         const response = await fetch(`http://92.205.234.30:7071/api/WorkOrder/GetList?pageSize=${pageSize}${sortingQuery}&pageNumber=${pageNumber + 1}&criteria=${JSON.stringify(filters.workOrder)}`, config).catch((error) => {
             console.log(error)
@@ -136,7 +136,7 @@ const WorkOrder = (props) => {
                 <FlatList
                     style={{ width: "100%" }}
                     contentContainerStyle={{ paddingTop: 10 }}
-                    renderItem={({ item, i }) => <TableRow item={item} i={i} navigation={navigation} />}
+                    renderItem={({ item, i }) => <TableRow setTableData={setTableData} item={item} i={i} navigation={navigation} />}
                     data={tableData}
                     onScroll={({ nativeEvent }) => { nativeEvent?.contentOffset?.y > 100 ? setIsExtended(false) : setIsExtended(true) }}
                     ListFooterComponent={loadingFooter}
@@ -167,30 +167,94 @@ const WorkOrder = (props) => {
         </KeyboardAvoidingView>
     )
 }
-const TableRow = memo(({ item, i, navigation }) => {
+const TableRow = memo(({ item, i, navigation, setTableData }) => {
+    const { token, setLoading, logout } = useContext(AppContext)
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
     const menuButtonRef = useRef(null);
+    const handleDelete = async () => {
+        setIsMenuVisible(false);
+        const confirm = await new Promise((resolve) => {
+            Alert.alert(
+                "Confirm Deletion",
+                "Are you sure you want to delete this work order?",
+                [
+                    { text: "Cancel", onPress: () => resolve(false), style: "cancel" },
+                    { text: "Delete", onPress: () => resolve(true), style: "destructive" }
+                ])
+        })
+        if (!confirm) return
+        //for now the changes gonna be local till i figure out the delete api, this is to give instant feedback to the user
+        setTableData((prev) => (prev.filter((record) => record.ID !== item.ID)))
+        // setLoading(true)
+        // const response = await fetch(`http://92.205.234.30:7071/api/WorkOrder/GetByID?ID=${item.ID}`, {
+        //     method: "GET",
+        //     headers: {
+        //         "Authorization": `bearer ${token}`,
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json",
+        //         "FormId": "903005"
+        //     }
+        // }).catch((error) => {
+        //     console.log(error)
+        //     Toast.show({ text1: "request went wrong!", type: "error" })
+        // })
+        // if (!response.ok) {
+        //     if (response.status == 401) {
+        //         Toast.show({ text1: "Session Expired", type: "error" })
+        //         logout()
+        //         return
+        //     }
+        //     response.text().then((res) => { console.log(res) })
+        //     Toast.show({ text1: "something went wrong!", type: "error" })
+        //     return
+        // }
+        // const data = await response.json()
+        // const deleteResponse = await fetch(`http://92.205.234.30:7071/api/WorkOrder/Delete`, {
+        //     method: "POST",
+        //     body: JSON.stringify({ dataObj: JSON.stringify(data) }),
+        //     headers: {
+        //         "Authorization": `bearer ${token}`,
+        //         "Content-Type": "application/json"
+        //     }
+        // }).catch((error) => {
+        //     console.log(error)
+        //     Toast.show({ text1: "request went wrong!", type: "error" })
+        // })
+        // deleteResponse.ok ? Toast.show({ text1: "Work Order Deleted", type: "success" }) : Toast.show({ text1: "Failed to delete Work Order", type: "error" })
+    }
     const statusColors = {
         primary: "#645ced",
         warning: "#ff9820",
         error: "#d32f2f",
         success: "#4caf50"
-
     };
     const MenuElement = () => (
-        <Menu style={{ position: "absolute", top: menuPosition.y, left: menuPosition.x }} visible={isMenuVisible} onDismiss={() => setIsMenuVisible(false)}
+        <Menu contentStyle={{ backgroundColor: "#282C34" }} style={{ position: "absolute", top: menuPosition.y, left: menuPosition.x }} visible={isMenuVisible} onDismiss={() => setIsMenuVisible(false)}
             anchor={
-                <Pressable android_ripple={{ borderless: true, foreground: true, color: "rgba(255,255,255,0.3)" }} ref={menuButtonRef} onPress={() => {
+                <Pressable hitSlop={30} android_ripple={{ borderless: true, foreground: true, color: "rgba(255,255,255,0.3)" }} ref={menuButtonRef} onPress={() => {
                     setIsMenuVisible(true);
                     menuButtonRef.current.measure((fx, fy, width, height, px, py) => {
-                        setMenuPosition({ x: px - 100, y: py - 70 });
+                        setMenuPosition({ x: px - 140, y: py - 70 });
                     });
                 }}>
                     <Icon size={25} source="dots-vertical" />
                 </Pressable>}>
-            <Menu.Item title="Edit" />
-            <Menu.Item title="Delete" />
+            <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.3)" }} onPress={() => (navigation.navigate("WorkOrderEdit", { ID: item.id }, setIsMenuVisible(false)))}>
+                <Menu.Item leadingIcon={() => <Icon size={25} source={"pencil"} />} title="Edit" />
+            </Pressable>
+            <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.3)" }} onPress={() => (navigation.navigate("WorkOrderEdit", { ID: item.id }, setIsMenuVisible(false)))}>
+                <Menu.Item leadingIcon={() => <Icon size={25} source={"file-document-arrow-right"} />} title="Export as CSV" />
+            </Pressable>
+            <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.3)" }} onPress={() => (navigation.navigate("WorkOrderEdit", { ID: item.id }, setIsMenuVisible(false)))}>
+                <Menu.Item leadingIcon={() => <Icon size={25} source={"file-document-arrow-right"} />} title="Export as PDF" />
+            </Pressable>
+            <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.3)" }} onPress={() => (navigation.navigate("WorkOrderEdit", { ID: item.id }, setIsMenuVisible(false)))}>
+                <Menu.Item leadingIcon={() => <Icon size={25} source={"printer"} />} title="Print" />
+            </Pressable>
+            <Pressable android_ripple={{ foreground: true, color: "rgba(255,255,255,0.3)" }} onPress={() => handleDelete()}>
+                <Menu.Item titleStyle={{ color: "rgb(211,47,47)" }} leadingIcon={() => <Icon color='rgb(211,47,47)' size={25} source={"delete"} />} title="Delete" />
+            </Pressable>
         </Menu>
     )
     return (
